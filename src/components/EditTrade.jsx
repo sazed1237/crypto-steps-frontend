@@ -70,7 +70,7 @@ const EditTrade = () => {
         // console.log(tradeDetails)
 
 
-        const fetchResponse = await fetch(`http://localhost:5000/update/${tradeData?._id}`, {
+        const fetchResponse = await fetch(`https://crypto-steps-backend.vercel.app/update/${tradeData?._id}`, {
             method: "PUT",
             credentials: 'include',
             headers: {

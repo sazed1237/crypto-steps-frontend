@@ -21,13 +21,12 @@ const ViewTrade = () => {
 
 
     const fetchAllTrade = async () => {
-        const dataResponse = await fetch("http://localhost:5000/trades", {
+        const dataResponse = await fetch("https://crypto-steps-backend.vercel.app/trades", {
             method: "GET",
             credentials: 'include'
         })
         const data = await dataResponse.json()
         console.log(data.data)
-
         if (data.success) {
             setAllTrade(data.data)
         } else {
@@ -39,7 +38,7 @@ const ViewTrade = () => {
         // const formattedDate = selectedDate.toISOString().split('T')[0];
         const formattedDate = moment(selectedDate).format('YYYY-MM-DD')
         console.log("selected date", formattedDate)
-        const dataResponse = await fetch(`http://localhost:5000/trades/${formattedDate}`, {
+        const dataResponse = await fetch(`https://crypto-steps-backend.vercel.app/trades/${formattedDate}`, {
             method: "GET",
             credentials: 'include'
         });
@@ -65,7 +64,7 @@ const ViewTrade = () => {
 
     const handleDelete = async (id) => {
         // console.log(id)
-        const dataResponse = await fetch(`http://localhost:5000/trade/${id}`, {
+        const dataResponse = await fetch(`https://crypto-steps-backend.vercel.app/trade/${id}`, {
             method: "DELETE",
             credentials: "include",
             headers: {

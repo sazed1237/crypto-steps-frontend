@@ -66,7 +66,7 @@ const AddData = () => {
         console.log(productDetails)
 
 
-        const fetchResponse = await fetch("http://localhost:5000/trade", {
+        const fetchResponse = await fetch("https://crypto-steps-backend.vercel.app/trade", {
             method: "POST",
             credentials: 'include',
             headers: {
