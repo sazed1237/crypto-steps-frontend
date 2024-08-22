@@ -3,14 +3,13 @@ import signinIcon from '../../assets/signin.gif'
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { imageToBase64 } from '../../utils/imageTobase64';
 import UseAxiosPublic from '../../hooks/UseAxiosPublic';
+import { imageToBase64 } from '../../utils/imageToBase64';
 
 const SingUp = () => {
 
     const [showPassword, setShowPassword] = useState(false)
     const [profilePhoto, setProfilePhoto] = useState()
-    const [error, setError] = useState('')
     const navigate = useNavigate()
     const axiosPublic = UseAxiosPublic()
 
