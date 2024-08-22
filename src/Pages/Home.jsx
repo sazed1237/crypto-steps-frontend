@@ -6,7 +6,7 @@ import ViewTrade from '../components/ViewTrade';
 const Home = () => {
     return (
         <div className=' '>
-            <ViewTrade />
+            <h1 className='text-red-500 text-2xl text-center'>this is home</h1>
         </div>
     );
 };

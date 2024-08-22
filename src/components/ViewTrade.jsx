@@ -7,48 +7,57 @@ import moment from 'moment';
 import { Link, useNavigate } from 'react-router-dom';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useQuery } from 'react-query';
+import { useSelector } from 'react-redux';
+import UseAxiosPublic from '../hooks/UseAxiosPublic';
 
 const ViewTrade = () => {
 
     const [AllTrade, setAllTrade] = useState([])
-    const [openUpdateModal, setOpenUpdateModal] = useState(false)
-    const [userDetails, setUserDetails] = useState()
     const [openImageFullScreen, setOpenImageFullScreen] = useState(false)
     const [imageFullScreen, setImageFullScreen] = useState('')
     const navigate = useNavigate()
     const [selectedDate, setSelectedDate] = useState(null);
     const [startDate, setStartDate] = useState(new Date());
+    const user = useSelector((state) => state.user.user)
+    const [loading, setLoading] = useState(false)
+    const axiosPublic = UseAxiosPublic()
 
+
+
+    const token = localStorage.getItem('token');
 
     const fetchAllTrade = async () => {
-        const dataResponse = await fetch("https://crypto-steps-backend.vercel.app/trades", {
-            method: "GET",
-            credentials: 'include'
-        })
-        const data = await dataResponse.json()
-        console.log(data.data)
-        if (data.success) {
-            setAllTrade(data.data)
-        } else {
-            toast.error(data.message)
-        }
+        setLoading(true)
+        const res = await axiosPublic.get(`/trades?email=${user?.email}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }); // Adjust the endpoint as needed
+        setLoading(false)
+        setAllTrade(res?.data?.data)
+        console.log("trade data", res?.data)
     }
+
 
     const fetchTradeByDate = async () => {
         // const formattedDate = selectedDate.toISOString().split('T')[0];
         const formattedDate = moment(selectedDate).format('YYYY-MM-DD')
-        console.log("selected date", formattedDate)
-        const dataResponse = await fetch(`https://crypto-steps-backend.vercel.app/trades/${formattedDate}`, {
-            method: "GET",
-            credentials: 'include'
-        });
-        const data = await dataResponse.json();
-        console.log(data.data);
+        // console.log("selected date", formattedDate)
 
-        if (data.success) {
-            setAllTrade(data.data);
+        setLoading(true)
+        const res = await axiosPublic.get(`/trades/${formattedDate}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }); // Adjust the endpoint as needed
+        setLoading(false)
+        console.log("trade data", res?.data?.data)
+
+        if (res?.data?.success) {
+            setAllTrade(res?.data?.data);
         } else {
-            toast.error(data.message);
+            toast.error(res?.data?.message);
         }
     };
 
@@ -64,17 +73,18 @@ const ViewTrade = () => {
 
     const handleDelete = async (id) => {
         // console.log(id)
-        const dataResponse = await fetch(`https://crypto-steps-backend.vercel.app/trade/${id}`, {
-            method: "DELETE",
-            credentials: "include",
+        setLoading(true)
+        const res = await axiosPublic.delete(`/trades/${id}`, {
             headers: {
-                "content-type": "application/json"
+                Authorization: `Bearer ${token}`
             }
-        })
-        const data = await dataResponse.json()
-        console.log(data)
-        if (data.success) {
-            toast.success(data.message)
+        }); // Adjust the endpoint as needed
+        setLoading(false)
+
+        console.log("delete trade", res?.data)
+
+        if (res.data.success) {
+            toast.success(res.data.message)
             fetchAllTrade()
         }
     }

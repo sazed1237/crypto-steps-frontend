@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 
 
 const MenuList = [
+    { title: "Dashboard", link: '/dashboard/home' },
     { title: "Home", link: '/' },
     { title: "Entry Trade", link: '/entryTheTrade' },
     { title: "My Account", link: '/profile' },

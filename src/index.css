@@ -7,3 +7,16 @@
     filter: invert(1) sepia(1) saturate(5) hue-rotate(100deg);
     /* Adjust the filter values as needed */
 }
+
+
+progress::-webkit-progress-bar {
+    background-color: #ff0000;
+    border-radius: 10px;
+}
+
+progress::-webkit-progress-value {
+    background-color: #00C49F;
+    transition: width 1s ease-in-out;
+    border-radius: 10px 0px 0px 10px;
+}
+

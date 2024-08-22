@@ -5,16 +5,20 @@ import { toast } from 'react-toastify';
 import ViewFullScreenImage from './ViewFullScreenImage';
 import uploadImage from '../utils/UploadImage';
 import moment from 'moment';
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import UseAxiosPublic from '../hooks/UseAxiosPublic';
 
 const AddData = () => {
 
-
+    const axiosPublic = UseAxiosPublic()
     const [image, setImage] = useState({
         tradingImage: []
     })
 
     const [openImageFullScreen, setOpenImageFullScreen] = useState(false)
     const [imageFullScreen, setImageFullScreen] = useState('')
+    const navigate = useNavigate()
 
     console.log(image)
 
@@ -47,6 +51,7 @@ const AddData = () => {
         })
     }
 
+
     const handleSubmit = async (event) => {
         event.preventDefault()
 
@@ -62,38 +67,42 @@ const AddData = () => {
         const tradingImage = image.tradingImage
         // const formattedDate = 
 
-        const productDetails = { name, entryPrice, exitPrice, volume, pnl, date, condition, note, tradingImage }
-        console.log(productDetails)
+        const tradeDetails = { name, entryPrice, exitPrice, volume, pnl, date, condition, note, tradingImage }
+        console.log(tradeDetails)
 
 
-        const fetchResponse = await fetch("https://crypto-steps-backend.vercel.app/trade", {
-            method: "POST",
-            credentials: 'include',
-            headers: {
-                "content-type": "application/json"
-            },
-            body: JSON.stringify(productDetails)
-        })
-        const data = await fetchResponse.json()
-        console.log(data)
-        if (data.success) {
-            toast.success(data.message)
+        const token = localStorage.getItem('token')
+        // console.log(token)
 
-        } else {
-            toast.error(data.message)
+        if (token) {
+            const response = await axiosPublic.post("/trade", tradeDetails, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+
+            console.log(response.data)
+
+            if (response?.data.success) {
+                toast.success(response?.data?.message)
+                navigate('/dashboard/home')
+            } else {
+                toast.error(response?.data?.message)
+            }
         }
+
     }
 
     return (
-        <div className='w-full'>
-            <div className='text-2xl md:text-3xl lg:text-4xl my-8 text-center font-bold text-primaryColor '>
-                <h1>Enter Your Trade</h1>
+        <div className='w-full bg-white'>
+            <div className='text-2xl md:text-3xl lg:text-4xl mt-8 py-5 text-center font-bold text-primaryColor '>
+                <h1>Add Your Trade</h1>
             </div>
-            <div className='w-full max-w-3xl bg-primaryBgColor p-4 mx-auto'>
+            <div className='w-full max-w-3xl p-4 mx-auto'>
 
                 <form onSubmit={handleSubmit}>
                     <div className='grid w-full py-2 gap-2'>
-                        <label className="text-titleColor/80" htmlFor="name">Name :</label>
+                        <label className="text-primaryColor font-semibold" htmlFor="name">Name :</label>
                         <input
                             type="text"
                             name="name"
@@ -101,11 +110,11 @@ const AddData = () => {
                             required
 
                             id="name"
-                            className='bg-txtSelectBgColor/5 outline-none focus:outline-1 focus:outline-primaryColor text-titleColor placeholder:text-[#f3d7f463] w-full  p-2 rounded  ' />
+                            className='bg-base-200 outline-none focus:outline-1 focus:outline-primaryColor text-black placeholder:text-black/50 w-full  p-2 rounded  ' />
                     </div>
 
                     <div className='grid w-full py-2 gap-2'>
-                        <label className="text-titleColor/80" htmlFor="entryPrice">Entry Price :</label>
+                        <label className="text-primaryColor font-semibold" htmlFor="entryPrice">Entry Price :</label>
                         <input
                             type="number"
                             name="entryPrice"
@@ -113,11 +122,11 @@ const AddData = () => {
                             required
 
                             id="entryPrice"
-                            className='bg-txtSelectBgColor/5 outline-none focus:outline-1 focus:outline-primaryColor text-titleColor  placeholder:text-[#f3d7f463] w-full p-2 rounded  ' />
+                            className='bg-base-200 outline-none focus:outline-1 focus:outline-primaryColor text-black placeholder:text-black/50 w-full  p-2 rounded  ' />
                     </div>
 
                     <div className='grid w-full py-2 gap-2'>
-                        <label className="text-titleColor/80" htmlFor="exitPrice">Exit Price :</label>
+                        <label className="text-primaryColor font-semibold" htmlFor="exitPrice">Exit Price :</label>
                         <input
                             type="number"
                             name="exitPrice"
@@ -125,11 +134,11 @@ const AddData = () => {
                             required
 
                             id="exitPrice"
-                            className='bg-txtSelectBgColor/5 outline-none focus:outline-1 focus:outline-primaryColor text-titleColor  placeholder:text-[#f3d7f463] w-full p-2 rounded  ' />
+                            className='bg-base-200 outline-none focus:outline-1 focus:outline-primaryColor text-black placeholder:text-black/50 w-full  p-2 rounded  ' />
                     </div>
 
                     <div className='grid w-full py-2 gap-2'>
-                        <label className="text-titleColor/80" htmlFor="volume">Volume :</label>
+                        <label className="text-primaryColor font-semibold" htmlFor="volume">Volume :</label>
                         <input
                             type="number"
                             name="volume"
@@ -137,23 +146,23 @@ const AddData = () => {
                             required
 
                             id="volume"
-                            className='bg-txtSelectBgColor/5 outline-none focus:outline-1 focus:outline-primaryColor text-titleColor  placeholder:text-[#f3d7f463] w-full p-2 rounded  ' />
+                            className='bg-base-200 outline-none focus:outline-1 focus:outline-primaryColor text-black placeholder:text-black/50 w-full  p-2 rounded  ' />
                     </div>
 
                     <div className='grid w-full py-2 gap-2'>
-                        <label className="text-titleColor/80" htmlFor="pnl">PNL :</label>
+                        <label className="text-primaryColor font-semibold" htmlFor="pnl">PNL :</label>
                         <input
                             type="number"
                             name="pnl"
-                            placeholder='Earn/Loss PNL'
+                            placeholder='(-) if pnl is negative'
                             required
 
                             id="pnl"
-                            className='bg-txtSelectBgColor/5 outline-none focus:outline-1 focus:outline-primaryColor text-titleColor  placeholder:text-[#f3d7f463] w-full p-2 rounded  ' />
+                            className='bg-base-200 outline-none focus:outline-1 focus:outline-primaryColor text-black placeholder:text-black/50 w-full  p-2 rounded  ' />
                     </div>
 
                     <div className='grid w-full py-2 gap-2'>
-                        <label className="text-titleColor/80" htmlFor="date">Date :</label>
+                        <label className="text-primaryColor font-semibold" htmlFor="date">Date :</label>
                         <input
                             type="date"
                             name="date"
@@ -161,11 +170,11 @@ const AddData = () => {
                             required
 
                             id="date"
-                            className='custom-date-picker bg-txtSelectBgColor/5 outline-none focus:outline-1 focus:outline-primaryColor text-titleColor  placeholder:text-[#f3d7f463] w-full p-2 rounded  ' />
+                            className='custom-date-picker  bg-base-200 outline-none focus:outline-1 focus:outline-primaryColor text-black  w-full p-2 rounded  ' />
                     </div>
 
                     {/* <div className='grid w-full py-2 gap-2'>
-                        <label className="text-titleColor/80" htmlFor="condition">Condition :</label>
+                        <label className="text-primaryColor font-semibold" htmlFor="condition">Condition :</label>
                         <input
                             type="text"
                             name="condition"
@@ -173,28 +182,28 @@ const AddData = () => {
                             required
 
                             id="condition"
-                            className='bg-txtSelectBgColor/5 outline-none focus:outline-1 focus:outline-primaryColor text-titleColor  placeholder:text-[#f3d7f463] w-full p-2 rounded  ' />
+                            className='bg-base-200 outline-none focus:outline-1 focus:outline-primaryColor text-black placeholder:text-black/50 w-full  p-2 rounded  ' />
                     </div> */}
 
                     <div className='grid w-full py-2 gap-2'>
-                        <label className="text-titleColor/80" htmlFor="condition">Condition :</label>
+                        <label className="text-primaryColor font-semibold" htmlFor="condition">Condition :</label>
                         <select
                             name="condition"
                             id="condition"
                             required
-                            className='bg-txtSelectBgColor/5 outline-none focus:outline-1 focus:outline-primaryColor text-titleColor placeholder:text-[#f3d7f463] w-full p-2 rounded '
+                            className='bg-base-200 outline-none focus:outline-1 focus:outline-primaryColor text-black placeholder:text-black/50 w-full p-2 rounded '
                         >
-                            <option className='text-primaryLinksHoverColor bg-headerBgColor' value="" disabled selected>Select condition</option>
-                            <option className='text-primaryLinksHoverColor bg-headerBgColor' value="bullish">Bullish</option>
-                            <option className='text-primaryLinksHoverColor bg-headerBgColor' value="bearish">Bearish</option>
+                            <option className='text-primaryLinksHoverColor bg-base-200' value="" disabled selected>Select condition</option>
+                            <option className='text-primaryLinksHoverColor bg-base-200' value="bullish">LONG</option>
+                            <option className='text-primaryLinksHoverColor bg-base-200' value="bearish">SHORT</option>
                         </select>
                     </div>
 
 
                     <div className='grid w-full py-2 gap-2'>
-                        <label className="text-titleColor/80" htmlFor="Image">Trad Image :</label>
-                        <label className="text-titleColor/80" htmlFor="uploadImage">
-                            <div onChange={handleUploadImage} className='bg-txtSelectBgColor/5 outline-none hover:outline-1 hover:outline-primaryColor text-primaryColor  placeholder:text-[#f3d7f463]  w-full flex items-center justify-center flex-col h-24 p-2 rounded  cursor-pointer'>
+                        <label className="text-primaryColor font-semibold" htmlFor="Image">Trad Image :</label>
+                        <label className="text-primaryColor font-semibold" htmlFor="uploadImage">
+                            <div onChange={handleUploadImage} className='bg-base-300 outline-none hover:outline-1 hover:outline-primaryColor text-primaryColor  placeholder:text-[#f3d7f463]  w-full flex items-center justify-center flex-col h-24 p-2 rounded  cursor-pointer'>
                                 <span className='text-3xl'><FaCloudUploadAlt /></span>
                                 <p><small>Upload Trade Image</small></p>
                                 <input type="file" className='hidden' name="uploadImage" id="uploadImage" />
@@ -240,13 +249,13 @@ const AddData = () => {
 
 
                     <div className='grid w-full py-2 gap-2'>
-                        <label className="text-titleColor/80" htmlFor="note">Note :</label>
+                        <label className="text-primaryColor font-semibold" htmlFor="note">Note :</label>
                         <textarea
                             name="note"
                             placeholder='Describe the trade'
                             required
                             id="note"
-                            className='bg-txtSelectBgColor/5 outline-none focus:outline-1 focus:outline-primaryColor text-titleColor  placeholder:text-[#f3d7f463] w-full p-2 rounded  h-32'
+                            className='bg-base-300 outline-none focus:outline-1 focus:outline-primaryColor text-black  placeholder:text-black/50 w-full p-2 rounded  h-32'
                         >
 
                         </textarea>

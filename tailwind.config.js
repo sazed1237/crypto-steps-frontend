@@ -10,6 +10,8 @@ export default {
         primaryColor: "#36bb91",
         primaryLinksHoverColor: "#36bb91",
         primaryBgColor: "#1c222b",
+        secondaryBgColor: "#2f3743",
+        primaryTextColor: "#00C49F",
         headerBgColor: "#1c222b",
         footerBgColor: "#f8f8f8",
         primaryDarkColor: "#b6bdc5",
@@ -21,6 +23,8 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('daisyui'),
+  ],
 }
 

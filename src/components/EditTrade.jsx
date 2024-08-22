@@ -5,13 +5,15 @@ import { FaCloudUploadAlt, FaPlus } from 'react-icons/fa';
 import { IoMdClose } from 'react-icons/io';
 import { toast } from 'react-toastify';
 import moment from 'moment';
+import UseAxiosPublic from '../hooks/UseAxiosPublic';
 
 const EditTrade = () => {
     const location = useLocation()
     const navigate = useNavigate()
+    const axiosPublic = UseAxiosPublic()
+    const [loading, setLoading] = useState(false)
     const { tradeData } = location.state || {}
     console.log(tradeData)
-
 
 
     const [image, setImage] = useState({
@@ -22,6 +24,7 @@ const EditTrade = () => {
     const [imageFullScreen, setImageFullScreen] = useState('')
 
     console.log(image)
+
 
     const handleUploadImage = async (event) => {
         const file = event.target.files[0]
@@ -52,6 +55,7 @@ const EditTrade = () => {
         })
     }
 
+
     const handleSubmit = async (event) => {
         event.preventDefault()
 
@@ -70,21 +74,19 @@ const EditTrade = () => {
         // console.log(tradeDetails)
 
 
-        const fetchResponse = await fetch(`https://crypto-steps-backend.vercel.app/update/${tradeData?._id}`, {
-            method: "PUT",
-            credentials: 'include',
+        setLoading(true)
+        const token = localStorage.getItem('token')
+        const res = await axiosPublic.put(`/update/${tradeData?._id}`, tradeDetails, {
             headers: {
-                "content-type": "application/json"
-            },
-            body: JSON.stringify(tradeDetails)
-        })
-        const data = await fetchResponse.json()
-        console.log(data)
-        if (data.success) {
-            toast.success(data.message)
+                Authorization: `Bearer ${token}`
+            }
+        }); // Adjust the endpoint as needed
+        setLoading(false)
+        if (res?.data?.success) {
+            toast.success(res?.data?.message)
             navigate('/')
         } else {
-            toast.error(data.message)
+            toast.error(res?.data?.message)
         }
     }
 
