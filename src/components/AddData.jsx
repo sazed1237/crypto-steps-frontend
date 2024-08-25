@@ -68,10 +68,10 @@ const AddData = () => {
         // const formattedDate = 
 
         const tradeDetails = { name, entryPrice, exitPrice, volume, pnl, date, condition, note, tradingImage }
-        console.log(tradeDetails)
+        // console.log(tradeDetails)
 
 
-        const token = localStorage.getItem('token')
+        const token = localStorage.getItem('access-token')
         // console.log(token)
 
         if (token) {
@@ -85,7 +85,7 @@ const AddData = () => {
 
             if (response?.data.success) {
                 toast.success(response?.data?.message)
-                navigate('/dashboard/home')
+                navigate('/')
             } else {
                 toast.error(response?.data?.message)
             }
@@ -194,8 +194,8 @@ const AddData = () => {
                             className='bg-base-200 outline-none focus:outline-1 focus:outline-primaryColor text-black placeholder:text-black/50 w-full p-2 rounded '
                         >
                             <option className='text-primaryLinksHoverColor bg-base-200' value="" disabled selected>Select condition</option>
-                            <option className='text-primaryLinksHoverColor bg-base-200' value="bullish">LONG</option>
-                            <option className='text-primaryLinksHoverColor bg-base-200' value="bearish">SHORT</option>
+                            <option className='text-primaryLinksHoverColor bg-base-200' value="LONG">LONG</option>
+                            <option className='text-primaryLinksHoverColor bg-base-200' value="SHORT">SHORT</option>
                         </select>
                     </div>
 

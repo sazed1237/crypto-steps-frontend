@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useQuery } from "react-query";
 import { Cell, PieChart, Pie, } from 'recharts';
 import UseAxiosPublic from '../../hooks/UseAxiosPublic';
@@ -8,19 +8,17 @@ import moment from 'moment';
 import DashboardChart from '../../components/DashboardChart';
 import RecentTrades from '../../components/RecentTrades';
 import FullCalender from '../../components/FullCalender';
-import { useSelector } from 'react-redux';
 import Loading from '../../components/Loading';
+import { AuthContext } from '../../Providers/AuthProviders';
+import ChartByMonth from '../../components/ChartByMonth';
 
 
 
 
 const DashboardHome = ({ startDate }) => {
-    const user = useSelector((state) => state?.user?.user)
+    const { user } = useContext(AuthContext)
     const axiosPublic = UseAxiosPublic()
     const [loading, setLoading] = useState(false)
-
-
-
 
 
     const formattedDate = moment(startDate).format('YYYY-MM-DD')
@@ -32,14 +30,14 @@ const DashboardHome = ({ startDate }) => {
         queryKey: ['user-trade-stats', user?.email], // Use user ID in the query key
         queryFn: async () => {
             setLoading(true)
-            const token = localStorage.getItem('token');
+            const token = localStorage.getItem('access-token');
             const res = await axiosPublic.get(`/trades?email=${user?.email}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             }); // Adjust the endpoint as needed
             setLoading(false)
-            console.log("trade data", res?.data)
+            // console.log("trade data", res?.data)
             return res?.data?.data;
         },
         enabled: !!user?.email, // Ensure the query only runs when user email is available
@@ -83,8 +81,14 @@ const DashboardHome = ({ startDate }) => {
     const lossFactor = positivePnL > 0 ? (negativePnL / positivePnL).toFixed(2) : 0;
 
     // Calculate average PnL for win/loss trades
-    const averageWinPnL = totalWins > 0 ? (positivePnL / totalWins).toFixed(2) : 0;
-    const averageLossPnL = totalLosses > 0 ? (negativePnL / totalLosses).toFixed(2) : 0;
+    const averageWinPnL = totalWins > 0 ? (positivePnL / totalWins) : 0;
+    const averageLossPnL = totalLosses > 0 ? (negativePnL / totalLosses) : 0;
+
+    // Calculate win and loss percentages for the bar widths
+    const totalPnLForBar = (averageWinPnL + averageLossPnL);
+    const avgWinPercentage = (averageWinPnL / totalPnLForBar) * 100
+    const avgLossPercentage = (averageLossPnL / totalPnLForBar) * 100
+
 
     // Filter trades for the specified date
     const tradesOnDate = tradeData.filter(trade => trade?.date === formattedDate)
@@ -120,6 +124,9 @@ const DashboardHome = ({ startDate }) => {
     ];
 
 
+
+
+
     if (loading) {
         return (
             <Loading />
@@ -128,7 +135,7 @@ const DashboardHome = ({ startDate }) => {
 
     return (
         <section>
-            <h2 className="text-2xl py-4 font-medium">Hi, Welcome Back <span>{user?.name}</span></h2>
+            <h2 className="text-2xl py-4 font-medium">Hi, Welcome Back <span>{user?.displayName}</span></h2>
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-3 bg-base-200 border-none ">
 
@@ -238,22 +245,45 @@ const DashboardHome = ({ startDate }) => {
                     {/* <div className="stat-desc">↘︎ 90 (14%)</div> */}
                 </div>
 
-                <div className="stat bg-white rounded  ">
-                    <div className="stat-figure text-secondary relative">
-
-                        <progress className="w-40 h-3 " value={averageWinPnL} max="100"></progress>
-
-                        <div className='flex justify-between'>
-                            <label htmlFor="" className='text-primaryColor' ><FormattedPrice amount={averageWinPnL} /></label>
-                            <label htmlFor="" className='text-red-600'>-<FormattedPrice amount={averageLossPnL} /></label>
-                        </div>
-
-                    </div>
+                <div className="stat bg-white rounded">
 
                     <div className="stat-title">Avg win/loss trade</div>
-                    <div className="stat-value"><FormattedPrice amount={averageWinPnL} /> </div>
-                    {/* <div className="stat-desc">↘︎ 90 (14%)</div> */}
+                    <div className="stat-value">
+                        <FormattedPrice amount={averageWinPnL} />
+                    </div>
+
+                    <div className=" text-secondary relative">
+
+                        {/* Responsive Bar */}
+                        <div className="mt-2 flex items-center w-full h-3 bg-gray-200 rounded overflow-hidden">
+                            <div
+                                className="bg-primaryTextColor h-full transition-all duration-1000 ease-in-out"
+                                style={{
+                                    width: `${avgWinPercentage}%`,
+                                }}
+                            />
+                            <div
+                                className="bg-red-600 h-full transition-all duration-1000 ease-in-out"
+                                style={{
+                                    width: `${avgLossPercentage}%`,
+                                }}
+                            />
+                        </div>
+
+
+                        <div className="flex justify-between">
+                            <label htmlFor="" className="text-primaryColor">
+                                <FormattedPrice amount={averageWinPnL} />
+                            </label>
+                            <label htmlFor="" className="text-red-600">
+                                -<FormattedPrice amount={averageLossPnL} />
+                            </label>
+                        </div>
+                    </div>
+
+
                 </div>
+
             </div>
 
             <div className='md:flex mt-10 gap-5 '>
@@ -264,7 +294,7 @@ const DashboardHome = ({ startDate }) => {
 
                 {/* for PieChart */}
                 <div className='w-full h-[400px] bg-white' >
-
+                    <ChartByMonth tradeData={tradeData} />
                 </div>
 
             </div>

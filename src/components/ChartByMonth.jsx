@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, PieChart, Pie, Sector, ResponsiveContainer, Legend, Tooltip, LabelList, Text } from 'recharts';
-import Divider from './Divider';
 import moment from 'moment';
+import {
+    ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Cell,
+} from 'recharts';
+import Divider from './Divider';
 import Loading from './Loading';
 
 
@@ -15,36 +17,36 @@ const getRandomColor = () => {
     return color;
 };
 
+const ChartByMonth = ({ tradeData }) => {
 
-const DashboardChart = ({ tradeData }) => {
-    const [dailyPnLData, setDailyPnLData] = useState([]);
+    const [monthlyPnLData, setMonthlyPnLData] = useState([]);
     const [loading, setLoading] = useState(false)
 
-    // Organize and calculate daily P&L by date
+    // Organize and calculate monthly P&L by month
     useEffect(() => {
         if (tradeData.length > 0) {
-            setLoading(true)
-            const dailyPnLMap = tradeData.reduce((acc, trade) => {
-                const tradeDate = moment(trade.date).format('YYYY-MM-DD');
+            setLoading(true);
+            const monthlyPnLMap = tradeData.reduce((acc, trade) => {
+                const tradeMonth = moment(trade.date).format('YYYY-MM');
                 const pnlValue = parseFloat(trade.pnl);
 
-                if (!acc[tradeDate]) {
-                    acc[tradeDate] = 0;
+                if (!acc[tradeMonth]) {
+                    acc[tradeMonth] = 0;
                 }
 
-                acc[tradeDate] += pnlValue;
+                acc[tradeMonth] += pnlValue;
                 return acc;
             }, {});
 
             // Convert the map to an array
-            const dailyPnLArray = Object.keys(dailyPnLMap).map(date => ({
-                date,
-                netDailyPnL: dailyPnLMap[date],
+            const monthlyPnLArray = Object.keys(monthlyPnLMap).map(month => ({
+                month,
+                netMonthlyPnL: monthlyPnLMap[month],
                 color: getRandomColor()
             }));
 
-            setLoading(false)
-            setDailyPnLData(dailyPnLArray);
+            setLoading(false);
+            setMonthlyPnLData(monthlyPnLArray);
         }
     }, [tradeData]);
 
@@ -52,9 +54,8 @@ const DashboardChart = ({ tradeData }) => {
     if (loading) {
         return (
             <Loading />
-        )
+        );
     }
-
 
     // barChart 
     const getPath = (x, y, width, height) => {
@@ -64,21 +65,15 @@ const DashboardChart = ({ tradeData }) => {
         Z`;
     };
 
-    const TriangleBar = (props) => {
-        const { fill, x, y, width, height } = props;
-
-        return <path d={getPath(x, y, width, height)} stroke="none" fill={fill} />;
-    };
-
     return (
         <div>
-            <h3 className='font-bold text-md px-7 pt-5'>Net Daily P&L</h3>
+            <h3 className='font-bold text-md px-7 pt-5'>Net Monthly P&L</h3>
             <Divider />
             <ResponsiveContainer width="100%" height={350}>
                 <BarChart
                     width={500}
                     height={350}
-                    data={dailyPnLData}
+                    data={monthlyPnLData}
                     margin={{
                         top: 30,
                         right: 30,
@@ -88,16 +83,16 @@ const DashboardChart = ({ tradeData }) => {
                 >
                     <CartesianGrid strokeDasharray="3 3" />
 
-                    <XAxis dataKey="date" />
+                    <XAxis dataKey="month" />
                     <YAxis />
                     <Tooltip />
                     <Bar
-                        dataKey="netDailyPnL"
-                        barSize={50}
-                        fill="#8884d8" shape={<TriangleBar />}
+                        dataKey="netMonthlyPnL"
+                        barSize={20}
+                        fill="#8884d8"
                         label={{ position: 'top' }}
                     >
-                        {dailyPnLData.map((entry, index) => (
+                        {monthlyPnLData.map((entry, index) => (
                             <Cell key={`cell-${index}`} fill={entry.color} />
                         ))}
                     </Bar>
@@ -107,4 +102,4 @@ const DashboardChart = ({ tradeData }) => {
     );
 };
 
-export default DashboardChart;
+export default ChartByMonth;

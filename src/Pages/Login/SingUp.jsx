@@ -1,25 +1,28 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import signinIcon from '../../assets/signin.gif'
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import UseAxiosPublic from '../../hooks/UseAxiosPublic';
 import { imageToBase64 } from '../../utils/imageToBase64';
+import { AuthContext } from '../../Providers/AuthProviders';
 
 const SingUp = () => {
 
     const [showPassword, setShowPassword] = useState(false)
-    const [profilePhoto, setProfilePhoto] = useState()
+    const [photoURL, setPhotoURL] = useState()
     const navigate = useNavigate()
     const axiosPublic = UseAxiosPublic()
+    const { createUser, updateUserProfile } = useContext(AuthContext)
+
 
 
     const handleUploadPhoto = async (event) => {
         const file = event.target.files[0]
 
-        const profilePhoto = await imageToBase64(file)
-        console.log('profile photo', profilePhoto)
-        setProfilePhoto(profilePhoto)
+        const photoURL = await imageToBase64(file)
+        console.log('profile photo', photoURL)
+        setPhotoURL(photoURL)
     }
 
 
@@ -33,24 +36,55 @@ const SingUp = () => {
         const confirmPassword = form.confirmPassword.value;
 
         if (password === confirmPassword) {
-            const userData = { name, email, password, profilePhoto };
 
-            // console.log('userData', userData);
+            createUser(email, password)
+                .then(result => {
+                    const user = result.user;
+                    console.log(user)
 
-            try {
-                const dataResponse = await axiosPublic.post('/singup', userData);
-                console.log("data in data response", dataResponse);
 
-                if (dataResponse.data?.success) {
-                    toast.success(dataResponse?.data?.message);
-                    navigate('/login');
-                } else {
-                    toast.error(dataResponse?.data?.message || "Signup failed");
-                }
-            } catch (error) {
-                console.error("Signup error", error);
-                toast.error(error?.response?.data?.message || "An error occurred");
-            }
+                    updateUserProfile(name)
+                        .then(() => {
+                            console.log('user profile is updated')
+
+
+                            // create user and entry in the database
+                            const userInfo = { name, email, password, photoURL };
+                            axiosPublic.post("/user", userInfo)
+                                .then(res => {
+
+                                    console.log("sign up", res?.data)
+
+                                    if (res?.data?.success) {
+                                        toast.success(res?.data?.message)
+                                        navigate('/')
+                                    } else {
+                                        toast.error(res?.data?.message)
+                                    }
+                                })
+
+                        })
+                })
+
+
+
+
+            // try {
+            //     const dataResponse = await axiosPublic.post('/singup', userData);
+            //     console.log("data in data response", dataResponse);
+
+            //     if (dataResponse.data?.success) {
+            //         toast.success(dataResponse?.data?.message);
+            //         navigate('/login');
+            //     } else {
+            //         toast.error(dataResponse?.data?.message || "Signup failed");
+            //     }
+            // } catch (error) {
+            //     console.error("Signup error", error);
+            //     toast.error(error?.response?.data?.message || "An error occurred");
+            // }
+
+
         } else {
             toast.error("Passwords doesn't match");
             throw new Error("Passwords doesn't match");
@@ -59,11 +93,11 @@ const SingUp = () => {
 
 
     return (
-        <div className=' w-full h-screen flex justify-center items-center md:p-4'>
+        <div className=' w-full bg-secondaryBgColor h-screen flex justify-center items-center md:p-4'>
             <div className='bg-primaryBgColor shadow-lg rounded-md p-5 w-full max-w-xl'>
                 <div className='w-20 h-20 mx-auto relative overflow-hidden rounded-full '>
                     <div>
-                        <img src={profilePhoto || signinIcon} alt="" />
+                        <img src={photoURL || signinIcon} alt="" />
                     </div>
                     <form onSubmit={handleSubmit}>
                         <label >
@@ -78,24 +112,24 @@ const SingUp = () => {
                 <form className='mt-7' onSubmit={handleSubmit}>
                     <div>
                         <div className='text-md mb-3'>
-                            <label className='text-white' htmlFor="">Name</label>
-                            <div className='bg-secondaryBgColor p-2'>
-                                <input type="name" name="name" placeholder='Enter your name' className='w-full h-full outline-none text-white bg-transparent' required />
+                            <label className='text-white' htmlFor="name">Name</label>
+                            <div className='bg-secondaryBgColor'>
+                                <input type="name" name="name" placeholder='Enter your name' className='w-full h-full outline-none text-white bg-transparent p-2' required />
                             </div>
                         </div>
 
                         <div className='text-md text-white mb-3'>
-                            <label htmlFor="">Email</label>
-                            <div className='bg-secondaryBgColor p-2'>
-                                <input type="email" name="email" placeholder='Enter your email' className='w-full h-full outline-none bg-transparent' required />
+                            <label htmlFor="email">Email</label>
+                            <div className='bg-secondaryBgColor'>
+                                <input type="email" name="email" placeholder='Enter your email' className='w-full h-full outline-none bg-transparent p-2' required />
                             </div>
                         </div>
 
                         <div className='text-md mb-3 text-white'>
-                            <label htmlFor="">Password</label>
-                            <div className='bg-secondaryBgColor p-2 flex'>
-                                <input type={showPassword ? 'text' : 'password'} name="password" placeholder='Enter your password' className='w-full h-full outline-none bg-transparent' required />
-                                <div className='text-xl text-white/50 cursor-pointer' onClick={() => setShowPassword(previous => !previous)}>
+                            <label htmlFor="password">Password</label>
+                            <div className='bg-secondaryBgColor flex'>
+                                <input type={showPassword ? 'text' : 'password'} name="password" placeholder='Enter your password' className='w-full h-full outline-none bg-transparent p-2' required />
+                                <div className='text-xl flex items-center px-2 text-white/50 cursor-pointer' onClick={() => setShowPassword(previous => !previous)}>
                                     <span>
                                         {
                                             showPassword ? <FaEyeSlash /> : <FaEye />
@@ -105,9 +139,9 @@ const SingUp = () => {
                             </div>
                         </div>
                         <div className='text-md text-white'>
-                            <label htmlFor="">Confirm Password</label>
-                            <div className='bg-secondaryBgColor p-2 flex'>
-                                <input type={showPassword ? 'text' : 'password'} name="confirmPassword" placeholder='Enter your confirm password' className='w-full h-full outline-none bg-transparent' required />
+                            <label htmlFor="confirmPassword">Confirm Password</label>
+                            <div className='bg-secondaryBgColor flex'>
+                                <input type={showPassword ? 'text' : 'password'} name="confirmPassword" id='confirmPassword' placeholder='Enter your confirm password' className='w-full h-full outline-none bg-transparent p-2' required />
                             </div>
                         </div>
 

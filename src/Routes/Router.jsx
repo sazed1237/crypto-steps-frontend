@@ -7,8 +7,6 @@ import DashboardHome from "../Pages/Dashboard/DashboardHome";
 import AddData from "../components/AddData";
 import Login from "../Pages/Login/Login";
 import SingUp from "../Pages/Login/SingUp";
-import { ProtectedRoute } from "./ProtectedRoute";
-import Home from "../Pages/Home";
 
 
 export const router = createBrowserRouter([
@@ -17,8 +15,23 @@ export const router = createBrowserRouter([
         element: <App />,
         children: [
             {
-                path: "/",
-                element: <Home />
+                path: '/',
+                element: <Dashboard />,
+                children: [
+                    {
+                        path: "/",
+                        element: <DashboardHome />
+                    },
+                    {
+                        path: "dashboard/addTrade",
+                        element: <AddData />
+                    },
+                    {
+                        path: "dashboard/allTrades",
+                        element: <ViewTrade />
+                    },
+
+                ],
             },
             {
                 path: "/login",
@@ -34,27 +47,28 @@ export const router = createBrowserRouter([
             }
         ]
     },
-    {
-        path: 'dashboard',
-        element: <Dashboard />,
-        children: [
-            {
-                path: "home",
-                element: <DashboardHome />
-            },
-            {
-                path: "addTrade",
-                element: <AddData />
-            },
-            {
-                path: "allTrades",
-                element: <ViewTrade />
-            },
-            {
-                path: '*',
-                element: <NotFound />
-            }
 
-        ]
-    }
+    // {
+    //     path: 'dashboard',
+    //     element: <Dashboard />,
+    //     children: [
+    //         {
+    //             path: "home",
+    //             element: <DashboardHome />
+    //         },
+    //         {
+    //             path: "addTrade",
+    //             element: <AddData />
+    //         },
+    //         {
+    //             path: "allTrades",
+    //             element: <ViewTrade />
+    //         },
+    //         {
+    //             path: '*',
+    //             element: <NotFound />
+    //         }
+
+    //     ]
+    // }
 ]);

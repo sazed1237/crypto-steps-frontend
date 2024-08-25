@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { FaTrash } from 'react-icons/fa';
 import { MdModeEdit } from 'react-icons/md';
 import { toast } from 'react-toastify';
@@ -7,9 +7,8 @@ import moment from 'moment';
 import { Link, useNavigate } from 'react-router-dom';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { useQuery } from 'react-query';
-import { useSelector } from 'react-redux';
 import UseAxiosPublic from '../hooks/UseAxiosPublic';
+import { AuthContext } from '../Providers/AuthProviders';
 
 const ViewTrade = () => {
 
@@ -19,13 +18,13 @@ const ViewTrade = () => {
     const navigate = useNavigate()
     const [selectedDate, setSelectedDate] = useState(null);
     const [startDate, setStartDate] = useState(new Date());
-    const user = useSelector((state) => state.user.user)
     const [loading, setLoading] = useState(false)
     const axiosPublic = UseAxiosPublic()
+    const { user } = useContext(AuthContext)
 
 
 
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('access-token');
 
     const fetchAllTrade = async () => {
         setLoading(true)
@@ -74,6 +73,7 @@ const ViewTrade = () => {
     const handleDelete = async (id) => {
         // console.log(id)
         setLoading(true)
+
         const res = await axiosPublic.delete(`/trades/${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -136,10 +136,10 @@ const ViewTrade = () => {
                                 <td className='text-white font-semibold'>{trade.name}</td>
                                 <td className='text-green-500'>{trade.entryPrice}</td>
                                 <td className='text-orange-400'>{trade.exitPrice}</td>
-                                <td className={`${trade?.condition === "bullish" ? "text-green-500" : "text-red-500"}`}>{trade.pnl}</td>
+                                <td className={`${trade?.pnl > 0 ? "text-green-500" : "text-red-500"}`}>{trade.pnl}</td>
                                 <td className='text-gray-300'>{trade.volume}</td>
                                 <td className='text-gray-300 text-sm'>{moment(trade?.date).format('YYYY-MM-DD')}</td>
-                                <td className={` text-sm ${trade?.condition === "bullish" ? "text-green-500" : "text-red-500"}`}>{trade.condition}</td>
+                                <td className={` text-sm ${trade?.condition === "LONG" ? "text-green-500" : "text-red-500"}`}>{trade.condition}</td>
                                 <td className='text-gray-300 text-sm py-1'>{trade.note}</td>
                                 <td className='text-gray-300  '>
                                     <img

@@ -3,6 +3,11 @@
 @tailwind utilities;
 
 
+:root {
+    --color-positive: #4CAF50;
+    /* Adjust this to your desired positive accent color */
+}
+
 .custom-date-picker::-webkit-calendar-picker-indicator {
     filter: invert(1) sepia(1) saturate(5) hue-rotate(100deg);
     /* Adjust the filter values as needed */
@@ -20,3 +25,16 @@ progress::-webkit-progress-value {
     border-radius: 10px 0px 0px 10px;
 }
 
+.responsive-bar {
+    display: flex;
+    width: 100%;
+}
+
+.positive {
+    background-color: #4CAF50;
+    /* Your positive color */
+}
+
+.negative {
+    background-color: red;
+}

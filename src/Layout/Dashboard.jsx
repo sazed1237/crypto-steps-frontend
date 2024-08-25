@@ -35,10 +35,15 @@ const Dashboard = () => {
                         </div>
                         <div className='text-white mx-2 space-y-5 rounded-md '>
                             <Link className='flex items-center rounded-md hover:bg-btnHoverColor bg-btnBgColor px-2 py-1 gap-2 duration-200 ' to={'/dashboard/addTrade'} > <FaPlus /> Add Trade </Link>
-                            <Link className='flex items-center rounded-md bg-gray-500 hover:bg-txtSelectBgColor px-2 py-1 gap-2 duration-200 ' to={'/dashboard/home'} > <LuLayoutDashboard /> Dashboard </Link>
+                            {/* <Link className='flex items-center rounded-md bg-gray-500 hover:bg-txtSelectBgColor px-2 py-1 gap-2 duration-200 ' to={'/dashboard/home'} > <LuLayoutDashboard /> Dashboard </Link> */}
                         </div>
 
-                        <ul className='menu uppercase text-white/70 mt-20'>
+                        <ul className='menu uppercase text-white/70 mt-3'>
+                            <li className='mb-10 capitalize'><NavLink to={'/'}>
+                                <LuLayoutDashboard></LuLayoutDashboard>
+                                Dashboard
+                            </NavLink></li>
+
 
                             <li><NavLink to={'/dashboard/allTrades'}>
                                 <FaList></FaList>
