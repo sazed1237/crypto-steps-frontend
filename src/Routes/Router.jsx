@@ -7,6 +7,7 @@ import DashboardHome from "../Pages/Dashboard/DashboardHome";
 import AddData from "../components/AddData";
 import Login from "../Pages/Login/Login";
 import SingUp from "../Pages/Login/SingUp";
+import ProtectedRoute from "./ProtectedRoute";
 
 
 export const router = createBrowserRouter([
@@ -16,7 +17,7 @@ export const router = createBrowserRouter([
         children: [
             {
                 path: '/',
-                element: <Dashboard />,
+                element: <ProtectedRoute><Dashboard /></ProtectedRoute>,
                 children: [
                     {
                         path: "/",
