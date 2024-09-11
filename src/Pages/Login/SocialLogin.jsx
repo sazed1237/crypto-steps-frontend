@@ -25,7 +25,8 @@ const SocialLogin = () => {
                 const userInfo = {
                     name: loggedUser?.displayName,
                     email: loggedUser?.email,
-                    photoURL: loggedUser?.photoURL
+                    photoURL: loggedUser?.photoURL,
+                    role: "GENERAL"
                 }
 
                 axiosPublic.post('/user', userInfo)
@@ -35,6 +36,10 @@ const SocialLogin = () => {
                         navigate('/')
                     })
             })
+            .catch((error) => {
+                toast.error(error.message || "An error occurred during sign-in");
+                console.error('Error during sign-in:', error);
+            });
     }
 
 
@@ -86,7 +91,7 @@ const SocialLogin = () => {
                 </div>
                 <div className='flex border rounded-full pl-1 py-1'>
                     <FcGoogle className='text-2xl'></FcGoogle>
-                    <button onClick={handleGoogleSingIn} className=' flex-1 justify-center hover:text-primaryColor duration-200 hover:scale-105 text-white text-center items-center'> Continue with Facebook </button>
+                    <button onClick={handleGoogleSingIn} className=' flex-1 justify-center hover:text-primaryColor duration-200 hover:scale-105 text-white text-center items-center'> Continue with Gmail </button>
                 </div>
             </div>
         </div>

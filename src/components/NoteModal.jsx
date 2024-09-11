@@ -54,14 +54,14 @@ const NoteModal = ({ tradeData, date, closeModal }) => {
         <div className="modal-box w-11/12 max-w-5xl rounded-md ">
 
             <div className='flex justify-between'>
-                <div className='flex gap-6'>
-                    <h3 className="font-bold text-lg text-headerBgColor">{moment(date).format("dddd, MMM DD, YYYY")}</h3>
-                    <h3 className={`font-bold text-lg ${netDailyPnL > 0 ? "text-primaryTextColor" : "text-red-500"}`}>Net P&L <FormattedPrice amount={netDailyPnL} /></h3>
+                <div className='flex gap-2 md:gap-6'>
+                    <h3 className="font-bold md:text-lg text-headerBgColor">{moment(date).format("dddd, MMM DD, YYYY")}</h3>
+                    <h3 className={`font-bold md:text-lg ${netDailyPnL > 0 ? "text-primaryTextColor" : "text-red-500"}`}>Net P&L <FormattedPrice amount={netDailyPnL} /></h3>
                 </div>
 
                 <button
                     onClick={() => setToggleModal(true)}
-                    className='flex items-center gap-1 bg-btnBgColor px-3 py-1 rounded-md hover:bg-btnHoverColor duration-300'>
+                    className='md:flex items-center hidden gap-1 bg-btnBgColor px-3 py-1 rounded-md hover:bg-btnHoverColor duration-300'>
                     <MdEventNote /> View Note
                 </button>
 
@@ -89,19 +89,19 @@ const NoteModal = ({ tradeData, date, closeModal }) => {
                 />
             )}
 
-            <div className="modal-action">
-                <button
+            <div className="modal-action ">
+                <div
                     onClick={closeModal}
                     type='button'
                     className='flex items-center gap-1 bg-red-400 px-3 py-1 rounded-md hover:bg-red-600 duration-300'>
                     Cancel
-                </button>
+                </div>
 
-                <button
+                <div
                     onClick={() => setToggleModal(prevState => !prevState)}
                     className='flex items-center gap-1 bg-btnBgColor px-3 py-1 rounded-md hover:bg-btnHoverColor duration-300'>
                     {toggleModal ? 'Back' : 'View Details'}
-                </button>
+                </div>
             </div>
 
         </div>

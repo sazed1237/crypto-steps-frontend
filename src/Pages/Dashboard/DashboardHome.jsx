@@ -134,8 +134,8 @@ const DashboardHome = ({ startDate }) => {
     }
 
     return (
-        <section>
-            <h2 className="text-2xl py-4 font-medium">Hi, Welcome Back <span>{user?.displayName}</span></h2>
+        <section className=''>
+            <h2 className="text-2xl py-4 font-medium">Hi, Welcome back : <span className='text-primaryColor font-bold'>{user?.displayName}</span></h2>
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-3 bg-base-200 border-none ">
 
@@ -286,28 +286,31 @@ const DashboardHome = ({ startDate }) => {
 
             </div>
 
-            <div className='md:flex mt-10 gap-5 '>
+
+
+            <div className='md:flex mt-10 gap-5 md:h-[500px] '>
+                <div className='w-full h-[450px] bg-white p-3' >
+                    <FullCalender tradeData={tradeData} />
+                </div>
+
+                <div className='w-full h-[450px] bg-white my-5 md:my-0' >
+                    <RecentTrades tradeData={tradeData} />
+                </div>
+            </div>
+
+            <div className='md:flex  md:h-[500px] gap-5 '>
                 {/* for barChart */}
                 <div className='w-full h-[400px] bg-white'>
                     <DashboardChart tradeData={tradeData} />
                 </div>
 
                 {/* for PieChart */}
-                <div className='w-full h-[400px] bg-white' >
+                <div className='w-full h-[400px] bg-white my-5 md:my-0' >
                     <ChartByMonth tradeData={tradeData} />
                 </div>
-
             </div>
 
-            <div className='md:flex mt-10 gap-5 h-[500px] '>
-                <div className='w-full h-[450px] bg-white' >
-                    <RecentTrades tradeData={tradeData} />
-                </div>
 
-                <div className='w-full h-[450px] bg-white p-3' >
-                    <FullCalender tradeData={tradeData} />
-                </div>
-            </div>
 
         </section>
     );

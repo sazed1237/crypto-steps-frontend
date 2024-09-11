@@ -168,9 +168,11 @@ const AddData = () => {
                             name="date"
                             placeholder='Earn/Loss date'
                             required
-
+                            defaultValue={new Date().toISOString().split('T')[0]}
                             id="date"
-                            className='custom-date-picker  bg-base-200 outline-none focus:outline-1 focus:outline-primaryColor text-black  w-full p-2 rounded  ' />
+                            className='custom-date-picker  bg-base-200 outline-none focus:outline-1 focus:outline-primaryColor text-black  w-full p-2 rounded  '
+                            onClick={(e) => e.target.showPicker()}
+                        />
                     </div>
 
                     {/* <div className='grid w-full py-2 gap-2'>
@@ -264,7 +266,7 @@ const AddData = () => {
                     <button
                         className="bg-btnBgColor mx-auto px-2 md:px-3 py-1 my-5 rounded-sm text-white hover:bg-btnHoverColor flex items-center gap-2"
                         type="submit"
-                    ><span><FaPlus /></span>Entry Now</button>
+                    ><span><FaPlus /></span>Add Now</button>
                 </form>
             </div>
 

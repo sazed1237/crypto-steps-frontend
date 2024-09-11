@@ -8,6 +8,7 @@ import AddData from "../components/AddData";
 import Login from "../Pages/Login/Login";
 import SingUp from "../Pages/Login/SingUp";
 import ProtectedRoute from "./ProtectedRoute";
+import Help from "../Pages/Dashboard/Help";
 
 
 export const router = createBrowserRouter([
@@ -30,6 +31,10 @@ export const router = createBrowserRouter([
                     {
                         path: "dashboard/allTrades",
                         element: <ViewTrade />
+                    },
+                    {
+                        path: "dashboard/help",
+                        element: <Help />
                     },
 
                 ],

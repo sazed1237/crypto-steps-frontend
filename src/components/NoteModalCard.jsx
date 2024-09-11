@@ -11,8 +11,8 @@ const NoteModalCard = ({ tradesOnDate,
     profitFactorOnDate,
     totalVolumeOnDate }) => {
     return (
-        <div>
-            <div className='flex justify-between mt-8'>
+        <div className=' '>
+            <div className='flex justify-between mt-8 overflow-x-auto'>
 
                 <div className='border-r-2 space-y-4 pr-3'>
                     <div className='flex justify-between gap-10'>
@@ -58,17 +58,17 @@ const NoteModalCard = ({ tradesOnDate,
             </div>
 
 
-            <div className="overflow-x-auto mt-10">
-                <table className="table table-sm text-center">
+            <div className="mt-10 overflow-x-auto w-full ">
+                <table className="table-fixed w-full md:table table-sm text-center">
                     <thead>
                         <tr className='bg-[#ccf7ef] font-bold text-sm'>
-                            <th>Name</th>
-                            <th>Entry</th>
-                            <th>Exit</th>
-                            <th>Side</th>
-                            <th>Volume</th>
-                            <th>Net P&L</th>
-                            <th>Playbook</th>
+                            <th className='w-20' >Name</th>
+                            <th className='w-20' >Entry</th>
+                            <th className='w-20' >Exit</th>
+                            <th className='w-20' >Side</th>
+                            <th className='w-20' >Volume</th>
+                            <th className='w-20' >Net P&L</th>
+                            <th className='w-20' >Playbook</th>
                         </tr>
                     </thead>
                     <tbody>

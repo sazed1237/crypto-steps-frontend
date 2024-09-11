@@ -38,3 +38,12 @@ progress::-webkit-progress-value {
 .negative {
     background-color: red;
 }
+
+
+
+
+
+/* Ensure that the calendar header is responsive */
+.fc-toolbar {
+    font-size: 0.70rem; /* Default font size for larger screens */
+}

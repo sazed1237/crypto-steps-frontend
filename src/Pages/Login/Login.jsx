@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -13,7 +13,10 @@ const Login = () => {
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
     const { signIn } = useContext(AuthContext)
+    const { user } = useContext(AuthContext)
 
+
+    console.log("user in login", user)
 
 
     const handleLogin = async (event) => {
@@ -30,12 +33,27 @@ const Login = () => {
         signIn(email, password)
             .then(result => {
                 const user = result.user;
-                console.log(user)
-
+                console.log("login user", user)
                 toast.success('Login Successful ');
                 navigate('/');
             })
+            .catch((error) => {
+                toast.error(error.message || "An error occurred during sign-in");
+                console.error('Error during sign-in:', error);
+            });
     };
+
+
+    useEffect(() => {
+
+        if (!user) {
+            handleLogin()
+        } else {
+            navigate('/')
+        }
+
+    }, [user])
+
 
     if (loading) {
         return (

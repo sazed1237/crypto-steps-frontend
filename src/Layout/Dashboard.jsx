@@ -5,6 +5,7 @@ import { FaList, FaPlus, FaWallet } from 'react-icons/fa6';
 import { LuLayoutDashboard } from 'react-icons/lu';
 import { LiaChartBar } from "react-icons/lia";
 import { PiSealWarningLight } from "react-icons/pi";
+import { IoMdHelpCircleOutline } from 'react-icons/io';
 
 const Dashboard = () => {
     const [startDate, setStartDate] = useState(new Date());
@@ -47,10 +48,10 @@ const Dashboard = () => {
 
                             <li><NavLink to={'/dashboard/allTrades'}>
                                 <FaList></FaList>
-                                All Trades
+                                trade Journal
                             </NavLink></li>
 
-                            <li><NavLink to={'/dashboard/insights'}>
+                            {/* <li><NavLink to={'/dashboard/insights'}>
                                 <PiSealWarningLight />
                                 Insights
                             </NavLink></li>
@@ -58,11 +59,16 @@ const Dashboard = () => {
                             <li><NavLink to={'/dashboard/tradelog'}>
                                 <FaWallet></FaWallet>
                                 Trade Log
-                            </NavLink></li>
+                            </NavLink></li> */}
 
-                            <li><NavLink to={'/dashboard/reports'}>
+                            {/* <li><NavLink to={'/dashboard/reports'}>
                                 <LiaChartBar />
                                 Reports
+                            </NavLink></li> */}
+
+                            <li><NavLink to={'/dashboard/help'}>
+                                <IoMdHelpCircleOutline />
+                                Help
                             </NavLink></li>
 
                         </ul>

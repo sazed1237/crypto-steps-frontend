@@ -45,7 +45,7 @@ const RecentTrades = ({ tradeData }) => {
                                         <tr key={index}>
                                             <th>{trade?.date}</th>
                                             <td>{trade?.name}</td>
-                                            <td className={`${trade?.pnl > 0 ? "text-primaryTextColor font-semibold" : "text-red-500 font-semibold"}  `}>{trade?.pnl}</td>
+                                            <td className={`${trade?.pnl > 0 ? "text-green-500 font-semibold" : "text-red-500 font-semibold"}  `}>{trade?.pnl}</td>
                                         </tr>
                                     ))
                                 }
@@ -83,7 +83,7 @@ const RecentTrades = ({ tradeData }) => {
                                         <tr key={index}>
                                             <th>{trade?.date}</th>
                                             <td>{trade?.name}</td>
-                                            <td className={`${trade?.netPnL > 0 ? "text-primaryTextColor font-semibold" : "text-red-500 font-semibold"}  `}>{trade?.netPnL}</td>
+                                            <td className={`${trade?.netPnL > 0 ? "text-green-500 font-semibold" : "text-red-500 font-semibold"}  `}>{trade?.netPnL}</td>
                                         </tr>
                                     ))
                                 }

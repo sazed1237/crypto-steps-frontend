@@ -85,6 +85,7 @@ const DashboardHead = ({ startDate, setStartDate, setSelectedDate }) => {
                     <ul
                         tabIndex={0}
                         className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
+                        <p className='text-lg text-center py-2 text-primaryColor uppercase font-bold'>{userDetails?.role}</p>
                         <li>
                             {
                                 user ? <button onClick={handleLogout}>Logout</button> : <Link to={'/login'} >login</Link>

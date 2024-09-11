@@ -10,6 +10,7 @@ import { AuthContext } from '../../Providers/AuthProviders';
 const SingUp = () => {
 
     const [showPassword, setShowPassword] = useState(false)
+    const [loading, setLoading] = useState(false)
     const [photoURL, setPhotoURL] = useState()
     const navigate = useNavigate()
     const axiosPublic = UseAxiosPublic()
@@ -34,9 +35,11 @@ const SingUp = () => {
         const email = form.email.value;
         const password = form.password.value;
         const confirmPassword = form.confirmPassword.value;
+        const role = "GENERAL"
 
         if (password === confirmPassword) {
 
+            setLoading(true)
             createUser(email, password)
                 .then(result => {
                     const user = result.user;
@@ -49,7 +52,7 @@ const SingUp = () => {
 
 
                             // create user and entry in the database
-                            const userInfo = { name, email, password, photoURL };
+                            const userInfo = { name, email, password, photoURL, role };
                             axiosPublic.post("/user", userInfo)
                                 .then(res => {
 
@@ -62,10 +65,19 @@ const SingUp = () => {
                                         toast.error(res?.data?.message)
                                     }
                                 })
-
+                                .finally(() => setLoading(false));
                         })
+                        .catch((error) => {
+                            toast.error(error.message || "An error occurred during sign-in");
+                            console.error('Error during sign-in:', error);
+                            setLoading(false);
+                        });
                 })
-
+                .catch((error) => {
+                    toast.error(error.message || "An error occurred during sign-in");
+                    console.error('Error during sign-in:', error);
+                    setLoading(false);
+                });
 
 
 
@@ -95,7 +107,7 @@ const SingUp = () => {
     return (
         <div className=' w-full bg-secondaryBgColor h-screen flex justify-center items-center md:p-4'>
             <div className='bg-primaryBgColor shadow-lg rounded-md p-5 w-full max-w-xl'>
-                <div className='w-20 h-20 mx-auto relative overflow-hidden rounded-full '>
+                <div className='w-20 h-20 mx-auto relative overflow-hidden rounded-full mt-4'>
                     <div>
                         <img src={photoURL || signinIcon} alt="" />
                     </div>
@@ -145,7 +157,12 @@ const SingUp = () => {
                             </div>
                         </div>
 
-                        <input className=' bg-btnBgColor px-3 py-1 rounded-sm text-white mt-10 w-full max-w-[100px] hover:bg-btnHoverColor hover:scale-110 transition-all mx-auto block' type="submit" value="Sing Up" />
+                        <input
+                            className={`bg-btnBgColor px-3 py-1 rounded-sm text-white mt-10 w-full max-w-[100px] hover:bg-btnHoverColor hover:scale-110 transition-all mx-auto block ${loading ? 'cursor-not-allowed opacity-50 hover:transform-none ' : ''}`}
+                            type="submit"
+                            value={`${loading ? "Loading..." : "Sign Up"}`}
+                            disabled={loading} // Disable the button when loading
+                        />
                     </div>
                 </form>
                 <p className='py-5 text-white/80'>Already have an account ? <Link to={'/login'} className='text-primaryColor font-semibold hover:underline'>Login</Link></p>

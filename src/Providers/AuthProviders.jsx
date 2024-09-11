@@ -8,7 +8,7 @@ const auth = getAuth(app);
 
 const AuthProviders = ({ children }) => {
 
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
     const [user, setUser] = useState()
     const axiosPublic = UseAxiosPublic()
     const googleProvider = new GoogleAuthProvider()

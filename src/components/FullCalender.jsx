@@ -67,7 +67,7 @@ const FullCalender = ({ tradeData }) => {
             <button className='w-full h-full cursor-pointer' onClick={() => handleEventClick(eventInfo.event.startStr)}>
                 <MdEventNote title='note' className="text-lg text-primaryTextColor " />
 
-                <div className='flex flex-col items-end pr-2 pb-1 -space-y-1'>
+                <div className=' min-w-fit md:w-full flex flex-col items-end  pr-2 pb-1 -space-y-1'>
                     <span>{eventInfo?.event?.extendedProps?.trades} trades</span>
                     <span className={`${eventInfo.event.extendedProps.pnl > 0 ? 'text-green-500' : 'text-red-500'}`}>
                         {<FormattedPrice amount={eventInfo.event.extendedProps.pnl} />}
@@ -100,7 +100,19 @@ const FullCalender = ({ tradeData }) => {
             initialView="dayGridMonth"
             events={events}
             eventContent={renderEventContent}
-            viewClassNames="h-[350px]"
+            viewClassNames="h-[350px] text-xs md:text-sm"
+            headerToolbar={{
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth'
+            }}
+            buttonText={{
+                prev: '<',
+                next: '>',
+                today: 'Today',
+                month: 'Month',
+
+            }}
         />
     );
 };

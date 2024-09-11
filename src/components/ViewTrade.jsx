@@ -102,7 +102,7 @@ const ViewTrade = () => {
         <div>
             <div className='flex justify-between my-5 text-primaryColor items-center'>
                 <p className='text-xl font-semibold '>Total Trade: {AllTrade?.length}</p>
-                <h2 className='text-3xl hidden md:block font-bold'>My Trade</h2>
+                <h2 className='text-3xl hidden md:block font-bold'>Trade Journal</h2>
                 <p className='text-xl font-semibold text-right'>
                     <DatePicker
                         className='bg-transparent border border-gray-400 w-1/2 text-center'

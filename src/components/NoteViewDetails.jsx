@@ -65,7 +65,7 @@ const NoteViewDetails = ({ tradesOnDate, closeModal }) => {
     };
 
     return (
-        <div className='my-10 text-black'>
+        <div className='my-10 text-black w-full overflow-x-auto'>
             {loading ? (
                 <Loading />
             ) : (
