@@ -20,6 +20,8 @@ export default {
         btnBgColor: "#36bb91",
         btnHoverColor: "#1a5e49",
         txtSelectBgColor: "#f3d7f463",
+
+        
       },
     },
   },

@@ -4,13 +4,14 @@ import { IoClose } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
 
 
-const MenuList = [
+export const MenuList = [
     { title: "Dashboard", link: '/dashboard/home' },
     { title: "Home", link: '/' },
-    { title: "Entry Trade", link: '/entryTheTrade' },
-    { title: "My Account", link: '/profile' },
+    { title: "About Us", link: '/about' },
+    { title: "Products", link: '/products' },
+    { title: "Membership", link: '/Membership' },
+    { title: "Contact Us", link: '/contact' },
     { title: "Blog", link: '/blog' },
-    { title: "Contact", link: '/contact' },
 ]
 
 
@@ -25,7 +26,7 @@ const Header = () => {
                 <div className='text-white h-full flex justify-between items-center'>
                     <Link to={"/"} className='text-2xl font-bold'>Crypto <span className='text-primaryColor'>Steps.</span></Link>
 
-                    <div className='flex gap-5'>
+                    <div className='flex gap-5 items-center'>
                         {
                             MenuList?.map((menu, index) => {
                                 return (
@@ -38,6 +39,7 @@ const Header = () => {
 
                             })
                         }
+                        <Link to={'/membership'} className='bg-primaryColor px-3 py-1.5 rounded-full' >Get Started</Link>
                     </div>
                     <div className='text-2xl md:hidden cursor-pointer'>
                         {

@@ -20,6 +20,10 @@ const AddData = () => {
     const [imageFullScreen, setImageFullScreen] = useState('')
     const navigate = useNavigate()
 
+    const [entryPrice, setEntryPrice] = useState(0);
+    const [exitPrice, setExitPrice] = useState(0);
+    const [pnl, setPnl] = useState(null);
+
     console.log(image)
 
     const handleUploadImage = async (event) => {
@@ -50,6 +54,27 @@ const AddData = () => {
             }
         })
     }
+
+
+    // const handleEntryPriceChange = (e) => {
+    //     setEntryPrice(e.target.value);
+    //     console.log(e.target.value)
+    //     calculatePNL();
+    // };
+
+    // const handleExitPriceChange = (e) => {
+    //     setExitPrice(parseFloat(e.target.value));
+    //     calculatePNL();
+    // };
+
+
+    const calculatePNL = (entry, exit) => {
+        console.log("entry", entry)
+        console.log("exit", exit)
+        setPnl((exit - entry).toFixed(2));
+    };
+
+    console.log("pnl", pnl)
 
 
     const handleSubmit = async (event) => {
@@ -120,7 +145,11 @@ const AddData = () => {
                             name="entryPrice"
                             placeholder='Entry price'
                             required
-
+                            onChange={(e) => {
+                                const value = parseFloat(e.target.value) || 0;
+                                setEntryPrice(value);
+                                calculatePNL(value, exitPrice); // Calculate PnL after setting entryPrice
+                            }}
                             id="entryPrice"
                             className='bg-base-200 outline-none focus:outline-1 focus:outline-primaryColor text-black placeholder:text-black/50 w-full  p-2 rounded  ' />
                     </div>
@@ -132,7 +161,11 @@ const AddData = () => {
                             name="exitPrice"
                             placeholder='Exit price'
                             required
-
+                            onChange={(e) => {
+                                const value = parseFloat(e.target.value) || 0;
+                                setExitPrice(value);
+                                calculatePNL(entryPrice, value); // Calculate PnL after setting exitPrice
+                            }}
                             id="exitPrice"
                             className='bg-base-200 outline-none focus:outline-1 focus:outline-primaryColor text-black placeholder:text-black/50 w-full  p-2 rounded  ' />
                     </div>
@@ -154,11 +187,12 @@ const AddData = () => {
                         <input
                             type="number"
                             name="pnl"
-                            placeholder='(-) if pnl is negative'
+                            placeholder='Your PNL'
                             required
-
+                            defaultValue={pnl}
+                            disabled
                             id="pnl"
-                            className='bg-base-200 outline-none focus:outline-1 focus:outline-primaryColor text-black placeholder:text-black/50 w-full  p-2 rounded  ' />
+                            className={`bg-base-200 outline-none focus:outline-1 focus:outline-primaryColor placeholder:text-black/50 w-full  p-2 rounded ${pnl > 0 ? "text-green-600" : "text-red-600"} `} />
                     </div>
 
                     <div className='grid w-full py-2 gap-2'>

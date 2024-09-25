@@ -8,7 +8,12 @@ import AddData from "../components/AddData";
 import Login from "../Pages/Login/Login";
 import SingUp from "../Pages/Login/SingUp";
 import ProtectedRoute from "./ProtectedRoute";
-import Help from "../Pages/Dashboard/Help";
+import Home from "../Pages/Home/Home";
+import Products from "../Pages/Products/Products";
+import Contact from "../Pages/Contact/Contact";
+import Blog from "../Pages/Blog/Blog";
+import AboutUs from "../Pages/About/AboutUs";
+import MembershipPage from "../Pages/Membership/MembershipPage";
 
 
 export const router = createBrowserRouter([
@@ -18,26 +23,27 @@ export const router = createBrowserRouter([
         children: [
             {
                 path: '/',
-                element: <ProtectedRoute><Dashboard /></ProtectedRoute>,
-                children: [
-                    {
-                        path: "/",
-                        element: <DashboardHome />
-                    },
-                    {
-                        path: "dashboard/addTrade",
-                        element: <AddData />
-                    },
-                    {
-                        path: "dashboard/allTrades",
-                        element: <ViewTrade />
-                    },
-                    {
-                        path: "dashboard/help",
-                        element: <Help />
-                    },
-
-                ],
+                element: <Home />
+            },
+            {
+                path: '/about',
+                element: <AboutUs />
+            },
+            {
+                path: '/products',
+                element: <Products />
+            },
+            {
+                path: '/membership',
+                element: <MembershipPage />
+            },
+            {
+                path: '/contact',
+                element: <Contact />
+            },
+            {
+                path: '/blog',
+                element: <Blog />
             },
             {
                 path: "/login",
@@ -54,27 +60,27 @@ export const router = createBrowserRouter([
         ]
     },
 
-    // {
-    //     path: 'dashboard',
-    //     element: <Dashboard />,
-    //     children: [
-    //         {
-    //             path: "home",
-    //             element: <DashboardHome />
-    //         },
-    //         {
-    //             path: "addTrade",
-    //             element: <AddData />
-    //         },
-    //         {
-    //             path: "allTrades",
-    //             element: <ViewTrade />
-    //         },
-    //         {
-    //             path: '*',
-    //             element: <NotFound />
-    //         }
+    {
+        path: 'dashboard',
+        element: <ProtectedRoute><Dashboard /></ProtectedRoute>,
+        children: [
+            {
+                path: "home",
+                element: <DashboardHome />
+            },
+            {
+                path: "addTrade",
+                element: <AddData />
+            },
+            {
+                path: "allTrades",
+                element: <ViewTrade />
+            },
+            {
+                path: '*',
+                element: <NotFound />
+            }
 
-    //     ]
-    // }
+        ]
+    }
 ]);

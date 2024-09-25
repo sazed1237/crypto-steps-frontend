@@ -77,7 +77,7 @@ const DashboardHome = ({ startDate }) => {
     const lossPercentage = totalTrades > 0 ? (totalLosses / totalTrades) * 100 : 0
 
     // Calculate Profit Factor 
-    const profitFactor = negativePnL > 0 ? (positivePnL / negativePnL).toFixed(2) : 1;
+    const profitFactor = negativePnL > 0 ? (positivePnL / negativePnL).toFixed(2) : 0;
     const lossFactor = positivePnL > 0 ? (negativePnL / positivePnL).toFixed(2) : 0;
 
     // Calculate average PnL for win/loss trades
@@ -125,8 +125,6 @@ const DashboardHome = ({ startDate }) => {
 
 
 
-
-
     if (loading) {
         return (
             <Loading />
@@ -135,9 +133,9 @@ const DashboardHome = ({ startDate }) => {
 
     return (
         <section className=''>
-            <h2 className="text-2xl py-4 font-medium">Hi, Welcome back : <span className='text-primaryColor font-bold'>{user?.displayName}</span></h2>
+            {/* <h2 className="text-2xl py-4 font-medium">Hi, Welcome back : <span className='text-primaryColor font-bold'>{user?.displayName}</span></h2> */}
 
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-3 bg-base-200 border-none ">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 bg-base-200 border-none ">
 
                 <div className="stat bg-white text-primaryTextColor rounded ">
                     <div className="stat-figure text-secondary">

@@ -4,6 +4,9 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 import Loading from './components/Loading';
+import Header from './Shared/Header';
+import Footer from './Shared/Footer';
+
 
 
 
@@ -29,10 +32,12 @@ function App() {
 
   return (
     <div className=''>
+      <Header />
       <ToastContainer />
       <div className='min-h-screen mx-auto '>
         <Outlet />
       </div>
+      <Footer />
     </div>
   );
 }

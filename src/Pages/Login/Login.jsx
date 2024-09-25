@@ -51,7 +51,6 @@ const Login = () => {
         } else {
             navigate('/')
         }
-
     }, [user])
 
 
